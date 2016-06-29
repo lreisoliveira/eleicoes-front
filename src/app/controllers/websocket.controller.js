@@ -2,23 +2,23 @@ angular.module('App_websocket')
 
 .controller('WebsocketController', ['$compile', '$scope', '$interval', 'config', function($compile, $scope, $interval, config) {
 
-    $scope.numero = '0';
+    $scope.mensagem = '--';
+    $scope.usuarios = 'Carregando...';
 
     $scope.applyNarracaoWebsocketRails = function() {
 
-    var dispatcher = new WebSocketRails(config.url.websocket);
-    var channel    = dispatcher.subscribe('canal');
+    var dispatcher = new WebSocketRails(config.url.endpoint);
+    var channel    = dispatcher.subscribe(config.websocket.canal);
 
-    channel.bind('conectados', function (conteudo) {
-        console.log(conteudo);
+    channel.bind(config.websocket.conectados, function (conteudo) {
+        $scope.usuarios = conteudo.usuarios_conectados;
     });
 
-    channel.bind('evento', function (conteudo) {
+    channel.bind(config.websocket.evento, function (conteudo) {
       $scope.$apply( function () {
-        $scope.numero = conteudo.numero;
+        $scope.mensagem = conteudo.mensagem;
       });
     });
-
 
     $interval (function () {
       if(dispatcher.state != "connected") {
