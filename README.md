@@ -1,35 +1,23 @@
-### Aovivo de eventos ###
+# Overview
 
-Após clonar o projeto, acesse os diretórios /src/ e /admin/src/ e renomeie o arquivo config de acordo com o ambiente.
+- Skeleton utilizando Angular para consumir websocket. Este projeto utiliza como exemplo este repositório https://github.com/lreisoliveira/ruby-on-rails-websocket 
+ 
 
-No wordpress, chamar na página desejada com o short code abaixo:
+## Instalação
+
+#### Clone do projeto
+    git clone https://github.com/lreisoliveira/angular-websocket.git
+
+#### Configuração
+
+Acessar
 
 ```
-[ao-vivo-eventos conteudo="narracao"]
-```
-# Testes unitário
-## Foi utilizado karma como motor para execução de testes unitários e o Jasmine para escrita
-
-### Procedimento para execução do teste em desenvolvimento
-
-#### Instalando dependências de outros plugins
-
-#### Acesse a pasta wp-content/plugins/wp-plugin-angular e execute:
-```
-bower install
-
-bower install angular-mocks
+/src/app/config/config.js
 ```
 
-#### Instalação dos módulos necessários
-```
-bower install
+e substituir a url **localhost:3000/websocket** pela url que vai consumir         
 
-sudo npm install -g karma
-npm install -g karma-chrome-launcher
-npm install -g jasmine-ajax
 ```
-#### Execução dos testes via linha de comando
-```
-karma start src/test/karma.conf.js
+websocket: '//localhost:3000/websocket'
 ```
