@@ -1,0 +1,17 @@
+angular.module('App_aovivo-eventos')
+
+.factory('config', function() {
+    var url = {
+        websocket: '//hml-apieventosaovivo.gazetaesportiva.net//websocket',
+        json:      '//hml-apieventosaovivo.gazetaesportiva.net/json'
+    };
+
+    var listar = {
+        conectatos: true
+    }
+
+    return {
+        url: url,
+        listar: listar
+    }
+});
