@@ -77,11 +77,18 @@ this.WebSocketRails = (function() {
   };
 
   WebSocketRails.prototype.new_message = function(data) {
+
+    if (typeof data['type'] == 'string'){
+        this.connection_established(data)
+    }
+
     var event, socket_message, _i, _len, _ref, _results;
     _results = [];
+
     for (_i = 0, _len = data.length; _i < _len; _i++) {
       socket_message = data[_i];
       event = new WebSocketRails.Event(socket_message);
+
       if (event.is_result()) {
         if ((_ref = this.queue[event.id]) != null) {
           _ref.run_callbacks(event.success, event.data);
@@ -94,12 +101,14 @@ this.WebSocketRails = (function() {
       } else {
         this.dispatch(event);
       }
+        console.log(this.state);
       if (this.state === 'connecting' && event.name === 'client_connected') {
         _results.push(this.connection_established(event.data));
       } else {
         _results.push(void 0);
       }
     }
+
     return _results;
   };
 

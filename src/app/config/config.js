@@ -2,13 +2,12 @@ angular.module('App_websocket')
 
 .factory('config', function() {
     var url = {
-        endpoint: '//localhost:3000/websocket'
+        endpoint: 'ws://10.6.4.9:28080/cable'
     };
 
     var websocket = {
         canal:      'canal',
-        evento:     'evento',
-        conectados: 'conectados'
+        evento:     'evento'
     };
 
     return {

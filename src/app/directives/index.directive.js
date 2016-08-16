@@ -6,7 +6,7 @@ angular.module('App_websocket')
         diretiva.scope = {
             campeonato: "@numero"
         };
+        diretiva.controller  = 'WebsocketController';
         diretiva.templateUrl = "/templates/index.html?" + Math.random();
-        diretiva.controller = 'WebsocketController';
         return diretiva;
     });

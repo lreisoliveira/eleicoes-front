@@ -26,7 +26,7 @@ WebSocketRails.Channel = (function() {
     if (this.is_private) {
       event_name = 'websocket_rails.subscribe_private';
     } else {
-      event_name = 'websocket_rails.subscribe';
+      event_name = 'subscribe';
     }
     this.connection_id = (_ref = this._dispatcher._conn) != null ? _ref.connection_id : void 0;
     event = new WebSocketRails.Event([

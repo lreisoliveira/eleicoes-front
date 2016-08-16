@@ -20,12 +20,14 @@ WebSocketRails.WebSocketConnection = (function(_super) {
     } else {
       this.url = "ws://" + this.url;
     }
+
     this._conn = new WebSocket(this.url);
+
     this._conn.onmessage = (function(_this) {
       return function(event) {
         var event_data;
         event_data = JSON.parse(event.data);
-        return _this.on_message(event_data);
+          return _this.on_message(event_data);
       };
     })(this);
     this._conn.onclose = (function(_this) {
