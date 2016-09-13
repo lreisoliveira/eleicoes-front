@@ -1,9 +1,6 @@
-var aux_call     = [];
-var data_message = [];
-
-function dataWebSocket(data) {
-    data_message = data;
-}
+var aux_call_ws     = [];
+var data_message_ws = [];
+var websocketState  = '';
 
 function WebSocketActionCable(websocketHost) {
     (function () {
@@ -47,7 +44,6 @@ function WebSocketActionCable(websocketHost) {
                 } else {
                     return url;
                 }
-
             },
 
             startDebugging: function () {
@@ -80,6 +76,7 @@ function WebSocketActionCable(websocketHost) {
     }).call(this);
 
     (function () {
+
         var bind = function (fn, me) {
             return function () {
                 return fn.apply(me, arguments);
@@ -268,6 +265,7 @@ function WebSocketActionCable(websocketHost) {
                         this.uninstallEventHandlers();
                     }
                     this.webSocket = new WebSocket(this.consumer.url, protocols);
+                    websocketState = this.webSocket;
                     this.installEventHandlers();
                     this.monitor.start();
                     return true;
@@ -377,7 +375,7 @@ function WebSocketActionCable(websocketHost) {
                         case message_types.rejection:
                             return this.subscriptions.reject(identifier);
                         default:
-                            data_message[JSON.parse(ref1.identifier).channel] = message;
+                            data_message_ws[JSON.parse(ref1.identifier).channel] = message;
                     }
                 },
                 open: function () {
@@ -585,9 +583,7 @@ function WebSocketActionCable(websocketHost) {
                 }
                 return object;
             };
-
             return Subscription;
-
         })();
 
     }).call(this);
@@ -619,11 +615,6 @@ function WebSocketActionCable(websocketHost) {
                     return this.connection.open();
                 }
             };
-
-            // Consumer.prototype.content = function (data) {
-            //     console.log('aham_aham', data);
-            // };
-
             return Consumer;
         })();
 
@@ -633,10 +624,9 @@ function WebSocketActionCable(websocketHost) {
         return ActionCable.createConsumer(websocketHost);
     };
 
-    this.bind = function subscriptions(channelName, eventObject, call){
-
-        aux_call[channelName]     = '';
-        data_message[channelName] = '';
+    this.bind = function subscriptions(channelName, eventObject, call) {
+        aux_call_ws[channelName]     = '';
+        data_message_ws[channelName] = '';
 
         this.myConsumer().subscriptions.create(channelName, {
             connected: function() {
@@ -650,11 +640,18 @@ function WebSocketActionCable(websocketHost) {
                 return this.perform('follow', eventObject);
             }
         });
+
         setInterval(function(){
-          if (aux_call[channelName] != data_message[channelName]){
-            aux_call[channelName] = data_message[channelName]
-            call(data_message[channelName]);
+          if (aux_call_ws[channelName] != data_message_ws[channelName]){
+            aux_call_ws[channelName] = data_message_ws[channelName]
+            call(data_message_ws[channelName]);
           }
         }, 1000);
+    };
+
+    this.conexao = function open(call) {
+      setInterval(function() {
+        call(websocketState.readyState == 1 ? true : false);
+      }, 1000);
     };
 }

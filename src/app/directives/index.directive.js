@@ -1,12 +1,9 @@
-angular.module('App_websocket')
+angular.module('App_eleicoes_resultado')
 
-    .directive('ngMinhadiretiva', function() {
+    .directive('ngDiretivaresultado', function() {
         var diretiva = {};
         diretiva.restrict = "E";
-        diretiva.scope = {
-            campeonato: "@numero"
-        };
-        diretiva.controller  = 'WebsocketController';
+        diretiva.controller  = 'ResultadoController';
         diretiva.templateUrl = "/templates/index.html?" + Math.random();
         return diretiva;
     });

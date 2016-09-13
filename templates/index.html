@@ -1,5 +1,52 @@
-Mensagem recebida: {{mensagem}}
+<script type="text/ng-template" id="customTemplate.html">
+  <a>
+      <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+      <i>({{match.model.uf}})</i>
+  </a>
+</script>
 
-<hr />
+selecionado: {{cidade_selecionada}}
+<br><br>
 
-Usuários conectados neste momento: {{usuarios}}
+<input type="text" ng-click="applyResultado('sp_sao-paulo')" ng-model="cidade_selecionada"
+placeholder="Digite o nome da cidade"
+typeahead="c as c.cidade for c in cidades | filter:$viewValue | limitTo:10"
+typeahead-min-length='3'
+typeahead-on-select='onSelectPart($item, $model, $label)'
+typeahead-template-url="customTemplate.html"
+class="form-control"
+style="width:350px;">
+
+<div ng-repeat="(a, value) in resultado">
+  <h1>{{resultado[a]['informacoes']['descricao']}} - {{resultado[a]['informacoes']['ano']}}</h1>
+  <br />
+  <div ng-repeat="(b, value) in resultado[a]['cargos']">
+      <h2>Candidatos à {{resultado[a]['cargos'][b]['cargo_nome']}}</h2>
+      <br />
+      <span style='color:#ff0000'>
+        Eleitorado: {{resultado[a]['cargos'][b]['eleitorado_total']}}
+      | Seções apuradas: {{resultado[a]['cargos'][b]['porcentagem_apurada']}}%
+      | Abstenção: {{resultado[a]['cargos'][b]['abstencao']}}%
+      | Votos anulados: {{resultado[a]['cargos'][b]['votos_anulados']}}%
+      | Votos em branco: {{resultado[a]['cargos'][b]['votos_em_branco']}}%
+      | Votos nulos: {{resultado[a]['cargos'][b]['votos_nulos']}}%
+      </span>
+
+      <br />
+
+      <div ng-repeat="(c, value) in resultado[a]['cargos'][b]['candidatos']">
+          <h4>{{resultado[a]['cargos'][b]['candidatos'][c]['nome_urna']}}</h4>
+          Número {{resultado[a]['cargos'][b]['candidatos'][c]['numero']}}
+          <br />
+          Partido {{resultado[a]['cargos'][b]['candidatos'][c]['partido_sigla']}} - {{resultado[a]['cargos'][b]['candidatos'][c]['partido_nome']}}
+          <br />
+          Classificação {{resultado[a]['cargos'][b]['candidatos'][c]['classificacao']}}
+          <br />
+          Votos {{resultado[a]['cargos'][b]['candidatos'][c]['porcentagem']}}%
+          <br />
+          Eleito {{resultado[a]['cargos'][b]['candidatos' ][c]['eleito']}}
+          <hr />
+      </div>
+</div>
+</div>
+<audio id="som_evento" src="/templates/beep.mp3"></audio>

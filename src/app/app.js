@@ -1,1 +1,1 @@
-angular.module('App_websocket', [])
+angular.module('App_eleicoes_resultado', ['ui.bootstrap'])
